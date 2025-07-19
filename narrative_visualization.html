@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--<script src="lib/d3.v7.js"></script>-->
+<script src='https://d3js.org/d3.v7.min.js'></script>
+<script type="module"></script>
+<style> circle {fill: lightblue; stroke: black;} </style>
+<head>
+    <meta charset="UTF-8">
+    <title>COVID-19 Monthly Statistics</title>
+    <link rel="shortcut icon" href="#">
+</head>
+<body onload='init()'>
+<svg width=300 height=300>
+</svg>
+<script>
+
+async function init() {
+
+const svg = d3.select("svg")
+  .append("g")
+  .attr("transform", "translate(50,50)");
+
+const xScale = d3.scaleLog()
+  .domain([10,150])
+  .range([0, 200]);
+
+const yScale = d3.scaleLog()
+  .domain([10,150])
+  .range([200, 0]);
+
+const dataPath = "https://github.com/dgoralczyk/Test1/data";
+
+d3.csv("data/time_series_covid19_confirmed_global.csv")
+    .then(function(data) {
+        // Add dots
+        svg.selectAll("circle")
+          .data(data)
+          .enter()
+          .append("circle")
+            .attr("cx", function(d){return d["3/9/2023"];})
+            .attr("cy", function(d){return d["3/9/2023"];})
+            .attr("r", function(d){return 5;});
+    })
+    .catch(function(error) {
+        console.error("Error loading CSV:", error)
+    });
+
+
+  // Add Y axis
+const yAxis = d3.axisLeft(yScale)
+  .tickValues([10,20,50,100])
+  .tickFormat(d3.format("~s"));
+
+d3.select("svg")
+  .append("g")
+  .attr("transform", "translate(50,50)")
+  .call(yAxis);
+
+
+  // Add X axis
+const xAxis = d3.axisBottom(xScale)
+  .tickValues([10,20,50,100])
+  .tickFormat(d3.format("~s"));
+
+d3.select("svg")
+  .append("g")
+  .attr("transform", "translate(50,250)")
+  .call(xAxis);
+
+}
+</script>
+</body>
+</html>
