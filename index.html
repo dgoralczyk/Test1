@@ -40,6 +40,8 @@ d3.csv("data/time_series_covid19_confirmed_global.csv")
             .attr("cx", function(d){return d["3/9/2023"];})
             .attr("cy", function(d){return d["3/9/2023"];})
             .attr("r", function(d){return 5;});
+
+        console.log(data);
     })
     .catch(function(error) {
         console.error("Error loading CSV:", error)
